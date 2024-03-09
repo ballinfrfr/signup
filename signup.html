@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>signup</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Welcome to Our Social Network!</h1>
+            <p>Connect with friends, share moments, and discover new connections.</p>
+        </div>
+        <div class="main">
+            <input type="text" name="" id="fname" placeholder="enter first name" required>
+            <input type="text" name="" id="lname" placeholder="enter last name" required>
+            <input type="email" name="" id="email" placeholder="enter email" required>
+            <input type="password" name="" id="password" placeholder="enter password" required>
+            <hr>
+            <button id="createAccBtn">create account</button>
+            <p>Already have an account? <a href="/view/login/login.html">Sign in here</a>.</p>
+        </div>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+  apiKey: "AIzaSyB7mMFr47V6-xLCkjkVMugiF3JbOkhwGqI",
+  authDomain: "tutoials.firebaseapp.com",
+  projectId: "tutoials",
+  storageBucket: "tutoials.appspot.com",
+  messagingSenderId: "1067077626427",
+  appId: "1:1067077626427:web:5f8f10a28e29960fc70a1e",
+  measurementId: "G-WSB14K9ML2"
+};
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        const createAccBtn = document.getElementById('createAccBtn');
+
+        createAccBtn.addEventListener('click', () => {
+            const firstName = document.getElementById('fname').value;
+            const lastName = document.getElementById('lname').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Check if password is at least 6 characters
+            if (password.length < 6) {
+                alert('Password has to be at least 6 characters.');
+                return; // Stop further execution
+            }
+
+            // Create user with email and password
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Signed in
+                    const user = userCredential.user;
+                    console.log('User created:', user);
+
+                    // Here you can do further processing like storing additional user info in Firestore
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.error('Error:', errorCode, errorMessage);
+                    // Handle errors here
+                });
+        });
+    </script>
+</body>
+</html>
+
+
